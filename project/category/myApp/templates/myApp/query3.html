@@ -1,0 +1,25 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Query1:</title>
+</head>
+<body>
+<a href="http://localhost:8000/">
+    <button>Go Back</button>
+</a><br>
+<h2>The average hard disk size of PCs</h2>
+<table>
+    <thead>
+        <tr>
+            <th>average hd</th>
+    </tr>
+    </thead>
+{% for i in output %}
+    <tr>
+        <td>{{ i.avg }}</td>
+    </tr>
+{% endfor %}
+</table>
+</body>
+</html>

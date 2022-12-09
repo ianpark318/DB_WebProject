@@ -1,0 +1,123 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Database:</title>
+</head>
+<body>
+<a href="http://localhost:8000/pc">
+    <button>pc Input</button>
+</a>
+<br>
+<a href="http://localhost:8000/laptop">
+    <button>laptop Input</button>
+</a>
+<br>
+<a href="http://localhost:8000/printer">
+    <button>printer Input</button>
+</a>
+<br><br>
+
+<a href="http://localhost:8000/query1">
+    <button>Find the average hard disk size of PCs</button>
+</a>
+<br>
+<a href="http://localhost:8000/query2">
+    <button>Find the average speed of laptop for each maker</button>
+</a>
+<br><a href="http://localhost:8000/query3">
+    <button>Find the price of laptop, which is the only laptop model of the maker</button>
+</a>
+<br><a href="http://localhost:8000/query4">
+    <button>Find the model and price of the printer of the highest price of each maker</button>
+</a>
+<br>
+<h2>Product table</h2>
+<table>
+    <thead>
+        <tr>
+        <th>maker</th>
+        <th>model</th>
+        <th>type</th>
+    </tr>
+    </thead>
+{% for product in products %}
+    <tr>
+        <td>{{ product.maker }}</td>
+        <td>{{ product.model }}</td>
+        <td>{{ product.type }}</td>
+    </tr>
+{% endfor %}
+</table>
+<h2>Pc table</h2>
+<table>
+    <thead>
+        <tr>
+        <th>model</th>
+        <th>speed</th>
+        <th>ram</th>
+        <th>hd</th>
+        <th>price</th>
+        <th>maker</th>
+    </tr>
+    </thead>
+{% for pc in pcs %}
+    <tr>
+        <td>{{ pc.model }}</td>
+        <td>{{ pc.speed }}</td>
+        <td>{{ pc.ram }}</td>
+        <td>{{ pc.hd }}</td>
+        <td>{{ pc.price }}</td>
+        <td>{{ pc.maker }}</td>
+    </tr>
+{% endfor %}
+</table>
+<h2>Laptop table</h2>
+<table>
+    <thead>
+        <tr>
+        <th>model</th>
+        <th>speed</th>
+        <th>ram</th>
+        <th>hd</th>
+        <th>screen</th>
+        <th>price</th>
+        <th>maker</th>
+    </tr>
+    </thead>
+{% for laptop in laptops %}
+    <tr>
+        <td>{{ laptop.model }}</td>
+        <td>{{ laptop.speed }}</td>
+        <td>{{ laptop.ram }}</td>
+        <td>{{ laptop.hd }}</td>
+        <td>{{ laptop.screen }}</td>
+        <td>{{ laptop.price }}</td>
+        <td>{{ laptop.maker }}</td>
+    </tr>
+{% endfor %}
+</table>
+<h2>Printer table</h2>
+<table>
+    <thead>
+        <tr>
+        <th>model</th>
+        <th>color</th>
+        <th>type</th>
+        <th>price</th>
+        <th>maker</th>
+    </tr>
+    </thead>
+{% for printer in printers %}
+    <tr>
+        <td>{{ printer.model }}</td>
+        <td>{{ printer.color }}</td>
+        <td>{{ printer.type }}</td>
+        <td>{{ printer.price }}</td>
+        <td>{{ printer.maker }}</td>
+    </tr>
+{% endfor %}
+</table>
+
+</body>
+</html>

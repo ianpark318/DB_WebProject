@@ -1,0 +1,30 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <meta charset="UTF-8">
+    <title>Query1:</title>
+</head>
+<body>
+<a href="http://localhost:8000/">
+    <button>Go Back</button>
+</a><br>
+<h2>The average speed of laptop for each maker</h2>
+<h3>SELECT maker, AVG(speed)<br>
+    FROM laptop<br>
+    GROUP BY maker;</h3>
+<table>
+    <thead>
+        <tr>
+            <th>maker</th>
+            <th>speed</th>
+    </tr>
+    </thead>
+{% for i in output %}
+    <tr>
+        <td>{{ i.maker }}</td>
+        <td>{{ i.speed }}</td>
+    </tr>
+{% endfor %}
+</table>
+</body>
+</html>

@@ -8,16 +8,23 @@
 <a href="http://localhost:8000/">
     <button>Go Back</button>
 </a><br>
-<h2>The average hard disk size of PCs</h2>
+<h2>The price of laptop, which is the only laptop model of the maker</h2>
+<h3>SELECT price <br>
+FROM product, laptop, (SELECT product.maker <br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;FROM laptop, product <br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;WHERE laptop.model=product.model <br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;GROUP BY product.maker <br>
+&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;HAVING count(product.maker)=1) as oneLT <br>
+WHERE laptop.model=product.model AND product.maker=oneLT.maker;</h3>
 <table>
     <thead>
         <tr>
-            <th>average hd</th>
+            <th>price</th>
     </tr>
     </thead>
 {% for i in output %}
     <tr>
-        <td>{{ i.avg }}</td>
+        <td>{{ i.price }}</td>
     </tr>
 {% endfor %}
 </table>

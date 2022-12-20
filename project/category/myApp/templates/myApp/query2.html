@@ -9,9 +9,10 @@
     <button>Go Back</button>
 </a><br>
 <h2>The average speed of laptop for each maker</h2>
-<h3>SELECT maker, AVG(speed)<br>
-    FROM laptop<br>
-    GROUP BY maker;</h3>
+<h3>SELECT product.maker, AVG(speed)<br>
+    FROM laptop, product<br>
+    WHERE laptop.model=product.model
+    GROUP BY product.maker;</h3>
 <table>
     <thead>
         <tr>

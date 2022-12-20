@@ -4,6 +4,7 @@ from .forms import *
 from django.shortcuts import render
 from django.db import connection
 
+
 def display(request):
     outputProducts = []
     outputPcs = []
@@ -62,50 +63,50 @@ def display_q1(request):
 def display_q2(request):
     outputOfQuery1 = []
     with connection.cursor() as cursor:
-        sqlQuery = "SELECT maker, AVG(speed) FROM laptop GROUP BY maker;"
+        sqlQuery = "SELECT product.maker, AVG(speed) FROM laptop, product WHERE laptop.model=product.model GROUP BY product.maker;"
         cursor.execute(sqlQuery)
         fetchResult = cursor.fetchall()
 
         for temp in fetchResult:
-            eachRow = {'maker': temp[0], 'speed': temp[1]}
+            eachRow = {'maker': temp[0], 'speed': round(temp[1], 3)}
             outputOfQuery1.append(eachRow)
     return render(request, 'myApp/query2.html',{"output": outputOfQuery1})
 
 def display_q3(request):
     outputOfQuery1 = []
     with connection.cursor() as cursor:
-        sqlQuery = "SELECT AVG(hd) FROM pc;"
+        sqlQuery = """SELECT price    
+                    FROM product, laptop, (SELECT product.maker     
+				                            FROM laptop, product    
+				                            WHERE laptop.model=product.model    
+                                            GROUP BY product.maker  
+                                            HAVING count(product.maker)=1) as oneLT 
+                    WHERE laptop.model=product.model AND product.maker=oneLT.maker;"""
         cursor.execute(sqlQuery)
         fetchResult = cursor.fetchall()
 
         for temp in fetchResult:
-            eachRow = {'avg': temp[0]}
+            eachRow = {'price': temp[0]}
             outputOfQuery1.append(eachRow)
     return render(request, 'myApp/query3.html',{"output": outputOfQuery1})
 
 def display_q4(request):
     outputOfQuery1 = []
     with connection.cursor() as cursor:
-        sqlQuery = "SELECT AVG(hd) FROM pc;"
+        sqlQuery = """SELECT printer.model, printer.price
+FROM printer, product, (SELECT maker, max(price) as price FROM printer GROUP BY maker) as exp
+WHERE printer.model=product.model AND printer.price=exp.price AND product.maker=exp.maker;"""
         cursor.execute(sqlQuery)
         fetchResult = cursor.fetchall()
 
         for temp in fetchResult:
-            eachRow = {'avg': temp[0]}
+            eachRow = {'model': temp[0], 'price': temp[1]}
             outputOfQuery1.append(eachRow)
     return render(request, 'myApp/query4.html',{"output": outputOfQuery1})
 
 def pc_inputData(request):
     if request.method == "POST":
         form = PcForm(request.POST)
-        '''
-        post = Product()
-        post.maker = request.POST['maker']
-        post.model = request.POST['model']
-        post.type = 'pc'
-        post.save()
-        #form_pro = ProductForm
-        '''
         if form.is_valid():
             form.save()
     else:
@@ -115,13 +116,6 @@ def pc_inputData(request):
 def printer_inputData(request):
     if request.method == "POST":
         form = PrinterForm(request.POST)
-        '''
-        post = Product()
-        post.maker = request.POST['maker']
-        post.model = request.POST['model']
-        post.type = 'printer'
-        post.save()
-        '''
         if form.is_valid():
             form.save()
     else:
@@ -131,13 +125,6 @@ def printer_inputData(request):
 def laptop_inputData(request):
     if request.method == "POST":
         form = LaptopForm(request.POST)
-        '''
-        post = Product()
-        post.maker = request.POST['maker']
-        post.model = request.POST['model']
-        post.type = 'laptop'
-        post.save()
-        '''
         if form.is_valid():
             form.save()
     else:

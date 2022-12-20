@@ -17,10 +17,13 @@ from django.urls import path
 from myApp import views
 
 urlpatterns = [
-    path('', views.display, name='index'),
-    path('pc/', views.pc_inputData, name='index'),
-    path('printer/', views.printer_inputData, name='index'),
-    path('laptop/', views.laptop_inputData, name='index'),
+    path('', views.mainfn, name='main'),
+    path('createtables/', views.createtables, name='main'),
+    path('insertrecords/', views.insertrecords, name='main'),
+    path('checkrecords/', views.display, name='main'),
+    path('pc/', views.pc_inputData, name='main'),
+    path('printer/', views.printer_inputData, name='main'),
+    path('laptop/', views.laptop_inputData, name='main'),
     path('query1/', views.display_q1, name='query1'),
     path('query2/', views.display_q2, name='query2'),
     path('query3/', views.display_q3, name='query3'),

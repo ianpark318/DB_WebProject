@@ -10,7 +10,7 @@
     <button>Go Back</button>
 </a><br>
 <h2>The model and price of the printer of the highest price of each maker</h2>
-<h3>SELECT printer.model, printer.price<br>
+<h3>SELECT product.maker, printer.model, printer.price<br>
 FROM printer, product, (SELECT maker, max(price) as price<br>
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;FROM printer <br>
 &emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&emsp;&nbsp;&nbsp;GROUP BY maker) as exp<br>
@@ -20,12 +20,14 @@ FROM printer, product, (SELECT maker, max(price) as price<br>
 <table>
     <thead>
         <tr>
+            <th>maker</th>
             <th>model</th>
             <th>price</th>
     </tr>
     </thead>
 {% for i in output %}
     <tr>
+        <td>{{ i.maker }}</td>
         <td>{{ i.model }}</td>
         <td>{{ i.price }}</td>
     </tr>

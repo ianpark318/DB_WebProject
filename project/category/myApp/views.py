@@ -94,14 +94,14 @@ def display_q3(request):
 def display_q4(request):
     outputOfQuery1 = []
     with connection.cursor() as cursor:
-        sqlQuery = """SELECT printer.model, printer.price
+        sqlQuery = """SELECT product.maker, printer.model, printer.price
 FROM printer, product, (SELECT maker, max(price) as price FROM printer GROUP BY maker) as exp
 WHERE printer.model=product.model AND printer.price=exp.price AND product.maker=exp.maker;"""
         cursor.execute(sqlQuery)
         fetchResult = cursor.fetchall()
 
         for temp in fetchResult:
-            eachRow = {'model': temp[0], 'price': temp[1]}
+            eachRow = {'maker': temp[0], 'model': temp[1], 'price': temp[2]}
             outputOfQuery1.append(eachRow)
     return render(request, 'myApp/query4.html',{"output": outputOfQuery1})
 
@@ -179,35 +179,35 @@ def laptop_inputData(request):
 
 def createtables(request):
     with connection.cursor() as cursor:
-        sqlQueryCreateProduct = "CREATE TABLE Product (" \
-                               "maker CHAR(1)," \
-                               "model INT," \
-                               "type CHAR(10)," \
-                                "PRIMARY KEY (maker, model));"
+        sqlQueryCreateProduct = """CREATE TABLE Product (
+                                    maker CHAR(1),
+                                    model INT,
+                                    type CHAR(10),
+                                    PRIMARY KEY (maker, model));"""
 
-        sqlQueryCreatePc = "CREATE TABLE PC (" \
-                         "model INT PRIMARY KEY," \
-                         "speed REAL," \
-                         "ram INT," \
-                         "hd INT," \
-                         "price INT," \
-                         "maker CHAR(1));"
+        sqlQueryCreatePc = """CREATE TABLE PC (
+                            model INT PRIMARY KEY,
+                            speed REAL,
+                            ram INT,
+                            hd INT,
+                            price INT,
+                            maker CHAR(1));"""
 
-        sqlQueryCreateLaptop = "CREATE TABLE Laptop (" \
-                            "model INT PRIMARY KEY," \
-                            "speed REAL," \
-                            "ram INT," \
-                            "hd INT," \
-                            "screen REAL," \
-                            "price INT," \
-                            "maker CHAR(1));"
+        sqlQueryCreateLaptop = """CREATE TABLE Laptop (
+                                model INT PRIMARY KEY,
+                                speed REAL,
+                                ram INT,
+                                hd INT,
+                                screen REAL,
+                                price INT,
+                                maker CHAR(1));"""
 
-        sqlQueryCreatePrinter = "CREATE TABLE Printer (" \
-                                "model INT PRIMARY KEY ," \
-                                "color BOOLEAN," \
-                                "type CHAR(10)," \
-                                "price INT," \
-                                "maker CHAR(1));"
+        sqlQueryCreatePrinter = """CREATE TABLE Printer (
+                                    model INT PRIMARY KEY ,
+                                    color BOOLEAN,
+                                    type CHAR(10),
+                                    price INT,
+                                    maker CHAR(1));"""
 
         cursor.execute(sqlQueryCreateProduct)
         cursor.execute(sqlQueryCreatePc)
@@ -220,37 +220,70 @@ def createtables(request):
 
 def insertrecords(request):
     with connection.cursor() as cursor:
-        sqlQueryInsertProduct = "INSERT INTO Product VALUES" \
-                                "('A',1001,'pc'),('A',1002,'pc'),('A',1003,'pc')," \
-                                "('A',2004,'laptop'),('A',2005,'laptop'),('A',2006,'laptop')," \
-                                "('B',1004,'pc'),('B',1005,'pc'),('B',1006,'pc')," \
-                                "('B',2007,'laptop'),('D',1007,'pc'),('D',1008,'pc')," \
-                                "('D',1009,'pc'),('D',1010,'pc'),('D',3004,'printer')," \
-                                "('D',3005,'printer'),('E',2001,'laptop'),('E',2002,'laptop')," \
-                                "('E',2003,'laptop'),('E',3001,'printer'),('E',3002,'printer')," \
-                                "('E',3003,'printer'),('F',2008,'laptop'),('F',2009,'laptop')," \
-                                "('G',2010,'laptop'),('H',3006,'printer'),('H',3007,'printer');"
+        sqlQueryInsertProduct = """INSERT INTO Product VALUES
+                                    ('A',1001,'pc'),
+                                    ('A',1002,'pc'),
+                                    ('A',1003,'pc'), 
+                                    ('A',2004,'laptop'),
+                                    ('A',2005,'laptop'),
+                                    ('A',2006,'laptop'),
+                                    ('B',1004,'pc'),
+                                    ('B',1005,'pc'),
+                                    ('B',1006,'pc'),
+                                    ('B',2007,'laptop'),
+                                    ('D',1007,'pc'),
+                                    ('D',1008,'pc'),
+                                    ('D',1009,'pc'),
+                                    ('D',1010,'pc'),
+                                    ('D',3004,'printer'),
+                                    ('D',3005,'printer'),
+                                    ('E',2001,'laptop'),
+                                    ('E',2002,'laptop'),
+                                    ('E',2003,'laptop'),
+                                    ('E',3001,'printer'),
+                                    ('E',3002,'printer'),
+                                    ('E',3003,'printer'),
+                                    ('F',2008,'laptop'),
+                                    ('F',2009,'laptop'),
+                                    ('G',2010,'laptop'),
+                                    ('H',3006,'printer'),
+                                    ('H',3007,'printer');"""
 
-        sqlQueryInsertPc = "INSERT INTO PC VALUES" \
-                           "(1001,2.66,1024,250,2114,'A'),(1002,2.10,512,250,995,'A')," \
-                           "(1003,1.42,512,80,478,'A'),(1004,2.80,1024,250,649,'B')," \
-                           "(1005,3.20,512,250,630,'B'),(1006,3.20,1024,320,1049,'B')," \
-                           "(1007,2.20,1024,200,510,'C'),(1008,2.20,2048,250,770,'D')," \
-                           "(1009,2.00,1024,250,650,'D'),(1010,2.80,2048,300,770,'D')," \
-                           "(1011,1.86,2048,160,959,'E'),(1012,2.80,1024,160,649,'E'),(1013,3.06,512,80,529,'E');"
+        sqlQueryInsertPc = """INSERT INTO PC VALUES
+                            (1001,2.66,1024,250,2114,'A'),
+                            (1002,2.10,512,250,995,'A'),
+                            (1003,1.42,512,80,478,'A'),
+                            (1004,2.80,1024,250,649,'B'),
+                            (1005,3.20,512,250,630,'B'),
+                            (1006,3.20,1024,320,1049,'B'),
+                            (1007,2.20,1024,200,510,'C'),
+                            (1008,2.20,2048,250,770,'D'),
+                            (1009,2.00,1024,250,650,'D'),
+                            (1010,2.80,2048,300,770,'D'),
+                            (1011,1.86,2048,160,959,'E'),
+                            (1012,2.80,1024,160,649,'E'),
+                            (1013,3.06,512,80,529,'E');"""
 
-        sqlQueryInsertLaptop = "INSERT INTO Laptop VALUES " \
-                               "(2001,2.00,2048,240,20.1,3673,'E'),(2002,1.73,1024,80,17.0,949,'E')," \
-                               "(2003,1.80,512,60,15.4,549,'E'),(2004,2.00,512,60,13.3,1150,'A')," \
-                               "(2005,2.15,1024,120,17.0,2500,'A'),(2006,2.00,2048,80,15.4,1700,'A')," \
-                               "(2007,1.83,1024,120,13.3,1429,'B'),(2008,1.60,1024,120,15.4,900,'F')," \
-                               "(2009,1.60,512,80,14.1,680,'F'),(2010,2.00,2048,160,15.4,2300,'G');"
+        sqlQueryInsertLaptop = """INSERT INTO Laptop VALUES
+                                    (2001,2.00,2048,240,20.1,3673,'E'),
+                                    (2002,1.73,1024,80,17.0,949,'E'),
+                                    (2003,1.80,512,60,15.4,549,'E'),
+                                    (2004,2.00,512,60,13.3,1150,'A'),
+                                    (2005,2.15,1024,120,17.0,2500,'A'),
+                                    (2006,2.00,2048,80,15.4,1700,'A'),
+                                    (2007,1.83,1024,120,13.3,1429,'B'),
+                                    (2008,1.60,1024,120,15.4,900,'F'),
+                                    (2009,1.60,512,80,14.1,680,'F'),
+                                    (2010,2.00,2048,160,15.4,2300,'G');"""
 
-        sqlQueryInsertPrinter = "INSERT INTO Printer VALUES" \
-                                "(3001,true,'ink-jet',99,'E'),(3002,false,'laser',239,'E')," \
-                                "(3003,true,'laser',899,'E'),(3004,true,'ink-jet',120,'D')," \
-                                "(3005,false,'laser',120,'D'),(3006,true,'ink-jet',100,'H')," \
-                                "(3007,true,'laser',200,'H');"
+        sqlQueryInsertPrinter = """INSERT INTO Printer VALUES
+                                (3001,true,'ink-jet',99,'E'),
+                                (3002,false,'laser',239,'E'),
+                                (3003,true,'laser',899,'E'),
+                                (3004,true,'ink-jet',120,'D'),
+                                (3005,false,'laser',120,'D'),
+                                (3006,true,'ink-jet',100,'H'),
+                                (3007,true,'laser',200,'H');"""
 
         cursor.execute(sqlQueryInsertProduct)
         cursor.execute(sqlQueryInsertPc)
